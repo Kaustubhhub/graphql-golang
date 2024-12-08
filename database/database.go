@@ -2,9 +2,9 @@ package database
 
 import (
 	"context"
-	"fmt"
 	"time"
 
+	"github.com/kaustubhhub/graphql-project/graph/model"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -21,14 +21,36 @@ func Connect() *DB {
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(connectionString))
 	if err != nil {
-		fmt.Println("Error connecting to MongoDB:", err)
 		return nil
 	}
 
 	if err := client.Ping(ctx, nil); err != nil {
-		fmt.Println("Failed to ping MongoDB:", err)
 		return nil
 	}
 
 	return &DB{Client: client}
+}
+
+func (db *DB) GetJob(id string) *model.JobListing {
+	var jobListing model.JobListing
+	return &jobListing
+}
+
+func (db *DB) GetJobs() []*model.JobListing {
+	var jobListings []*model.JobListing
+	return jobListings
+}
+
+func (db *DB) CreateJobListing(createInfo model.CreateJobListingInput) *model.JobListing {
+	var returnJobListing model.JobListing
+	return &returnJobListing
+}
+
+func (db *DB) UpdateJobListing(jobId string, jobInfo model.UpdateJobListingInput) *model.JobListing {
+	var jobListing model.JobListing
+	return &jobListing
+}
+
+func (db *DB) DeleteJobListing(jobId string) *model.DeleteJobResponse {
+	return &model.DeleteJobResponse{DeleteJobID: jobId}
 }
